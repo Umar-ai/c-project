@@ -222,9 +222,101 @@ public:
 
     }
 };
+class SearchTicket : public handlingFiles
+{
+public:
+    void findTicketByCNIC()
+    {
+        int searchCnic;
+        cout << "Enter CNIC to search ticket: ";
+        cin >> searchCnic;
+
+        ifstream file("tickets.txt");
+        ticket T;
+        bool found = false;
+
+        while (file >> T.cnic >> T.movie_name >> T.day)
+        {
+            if (T.cnic == searchCnic)
+            {
+                found = true;
+                cout << "Ticket Found:" << endl;
+                cout << "CNIC: " << T.cnic << endl;
+                cout << "Movie: " << T.movie_name << endl;
+                cout << "Day: " << T.day << endl;
+                break;
+            }
+        }
+
+        if (!found)
+        {
+            cout << "No ticket found with this CNIC." << endl;
+        }
+
+        file.close();
+    }
+};
+class CancelTicket : public handlingFiles
+{
+public:
+    void cancelTicketByCNIC()
+    {
+        int searchCnic;
+        cout << "Enter CNIC to cancel ticket: ";
+        cin >> searchCnic;
+
+        ifstream inFile("tickets.txt");
+        ofstream tempFile("temp.txt");
+        ticket T;
+        bool found = false;
+
+        while (inFile >> T.cnic >> T.movie_name >> T.day)
+        {
+            if (T.cnic == searchCnic)
+            {
+                found = true;
+                cout << "Ticket cancelled for CNIC: " << T.cnic << endl;
+                continue; // skip writing this record to temp file
+            }
+            tempFile << T.cnic << "\t" << T.movie_name << "\t" << T.day << endl;
+        }
+
+        inFile.close();
+        tempFile.close();
+
+        remove("tickets.txt");
+        rename("temp.txt", "tickets.txt");
+
+        if (!found)
+        {
+            cout << "No ticket found for given CNIC." << endl;
+        }
+    }
+};
+class ShowAllTickets : public handlingFiles
+{
+public:
+    void displayAllTickets()
+    {
+        ifstream file("tickets.txt");
+        ticket T;
+
+        cout << "\nAll Booked Tickets:\n";
+        cout << "----------------------\n";
+        while (file >> T.cnic >> T.movie_name >> T.day)
+        {
+            cout << "CNIC: " << T.cnic
+                 << " | Movie: " << T.movie_name
+                 << " | Day: " << T.day << endl;
+        }
+        file.close();
+    }
+};
+
 
 int main()
 {
-    
+    SearchTicket st;
+    st.findTicketByCNIC();
     
 }
