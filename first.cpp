@@ -65,7 +65,7 @@ public:
         }
         else if (n = 2)
         {
-            T.movie_name = "Shiddat";
+            T.movie_name = "Shiddatt";
         }
         else if (n = 3)
         {
