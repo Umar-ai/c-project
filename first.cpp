@@ -362,8 +362,64 @@ public:
         return cnic;
     }
 };
+class Admin : public movie {
+private:
+    string adminPassword = "admin123"; // Admin login password
 
+    // Authenticate the admin
+    bool authenticate() {
+        string input;
+        cout << "Enter admin password: ";
+        cin >> input;
+        if (input == adminPassword) return true;
+        cout << "Wrong password. Access denied.\n";
+        return false;
+    }
+
+public:
+    // Only this function is allowed now: Show number of tickets sold
+    void showReports() {
+        if (!authenticate()) return;
+
+        ifstream file("tickets.txt"); // Only using the file that exists
+        if (!file.is_open()) {
+            cout << "Error opening tickets.txt or file doesn't exist.\n";
+            return;
+        }
+
+        int cnic;
+        string movie, day;
+        int total = 0;
+
+        cout << "\n--- Ticket Sales Report ---\n";
+
+        // Read each record and count
+        while (file >> cnic >> movie >> day) {
+            total++;
+        }
+
+        cout << "Total Tickets Sold: " << total << endl;
+        file.close();
+    }
+};
 int main()
-{
-  
+{ Admin admin;
+    SearchTicket st;
+    int choice;
+
+    while (true) {
+        cout << "\n==== Cinema System Menu ====\n";
+        cout << "1. Search Ticket\n";
+        cout << "2. Admin Panel\n";
+        cout << "3. Exit\n";
+        cout << "Enter choice: ";
+        cin >> choice;
+
+        if (choice == 1) st.findTicketByCNIC();
+        else if (choice == 2) admin.showReports();
+        else if (choice == 3) break;
+        else cout << "Invalid choice.\n";
+    }}
+
+    return 0;
 }
