@@ -16,6 +16,11 @@ struct movieReview
     string Review;
     int rating;
 };
+class motiveTheater
+{
+public:
+    virtual void purposeofthisTheater() = 0;
+};
 // This is the main class which shows the total available tickets and show movielist
 class movie
 {
@@ -362,7 +367,7 @@ public:
         return cnic;
     }
 };
-class Admin : public movie
+class Admin : public movie, public motiveTheater
 {
 private:
     string adminPassword = "admin123"; // Admin login password
@@ -408,10 +413,22 @@ public:
         cout << "Total Tickets Sold: " << total << endl;
         file.close();
     }
+    void purposeofthisTheater()
+    {
+
+        cout << "  ---------------PURPOSE OF THE THEATER--------------" << endl;
+        cout << "  More than just movies, we're a heart of the community." << endl;
+        cout << "  Bringing diverse stories, family fun, and cultural nights" << endl;
+        cout << "  right to your neighborhood. We believe in cinema's power" << endl;
+        cout << "  to connect, inspire, and entertain. Enjoy state-of-the-art" << endl;
+        cout << "  sound, comfortable seating, and a welcoming atmosphere." << endl;
+        cout << "  Every ticket supports local initiatives and vibrant arts." << endl;
+        cout << "  Join us for unforgettable cinematic experiences and be" << endl;
+        cout << "  part of something special. Your community, your cinema!" << endl;
+    }
 };
 int main()
 {
-    
-
+   
     return 0;
 }
