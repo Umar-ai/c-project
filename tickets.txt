@@ -2,3 +2,4 @@
 242201058	Afghani	Friday
 748461152	Afghani	Friday
 344	Afghani	Friday
+123	Pathan	Friday

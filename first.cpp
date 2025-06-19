@@ -103,8 +103,8 @@ public:
         file.close();
         cout << "Ticket Booked" << endl;
     };
-
     void reviewFilm(int CNIC)
+
     {
 
         ifstream ifs;
@@ -112,13 +112,14 @@ public:
         ticket T;
         movieReview R;
         ifs.open("tickets.txt");
-        ofs.open("reviews.txt");
+        ofs.open("reviews.txt", ios::app);
 
-        ifs >> T.cnic;
-        ifs >> T.movie_name;
-        ifs >> T.day;
-        if (!ifs.eof())
+        while (!ifs.eof())
         {
+
+            ifs >> T.cnic;
+            ifs >> T.movie_name;
+            ifs >> T.day;
             if (CNIC == T.cnic)
             {
                 cout << "CNIC FOUND" << endl;
@@ -170,20 +171,39 @@ public:
                 R.cnic = CNIC;
                 cout << "Enter your review in a liner" << endl;
                 cin >> R.Review;
-                cout<<"Also enter the rating for the Film 1-5"<<endl;
-                cin>>R.rating;
+                cout << "Also enter the rating for the Film 1-5" << endl;
+                cin >> R.rating;
 
-                ofs << R.cnic << "\t" << R.movie_name << "\t" << R.Review << endl;
+                ofs << R.cnic << "\t" << R.movie_name << "\t" << R.Review << "\t" << R.rating << endl;
                 cout << "Review submitted " << endl;
                 cout << "Thanks for your feedback" << endl;
-            }
-            else
-            {
-                cout << "You haven't buy a ticket" << endl;
-                cout << "Only person who buy ticket can review" << endl;
+                ifs.close();
+                return;
             }
         }
+
+        cout << "You haven't buy a ticket" << endl;
+        cout << "Only person who buy ticket can review" << endl;
     };
+    void showAllmoviesReviews()
+    {
+        movieReview r;
+        ifstream ifs;
+        ifs.open("reviews.txt");
+        while (!ifs.eof())
+        {
+            ifs >> r.cnic;
+            ifs >> r.movie_name;
+            ifs >> r.Review;
+            ifs >> r.rating;
+            cout << "CNIC: " << r.cnic
+            << " | Movie: " << r.movie_name
+            << " | Day: " << r.Review
+            << " | Day: " << r.rating << endl;
+        }
+        ifs.close();
+        return;
+    }
 };
 // This class is responsible for handling booking of tickets.
 class BookTickets : public handlingFiles
@@ -202,24 +222,22 @@ public:
         }
     };
 };
- int movie::available_tickets = 100;
+int movie::available_tickets = 100;
 // This class handles filmreviews
 class FilmReviews : public handlingFiles
 {
 public:
-    void movieReview()
+    void addmovieReview()
     {
         int Cnic;
         cout << "Enter your cnic" << endl;
         cin >> Cnic;
         reviewFilm(Cnic);
     }
-    void ShowFilmReviws(){
-        cout<<"Film reviews"<<endl;
-        ifstream ifs;
-
-        ifs.open("review.txt");
-
+    void ShowFilmReviws()
+    {
+        cout << "Film reviews" << endl;
+        showAllmoviesReviews();
     }
 };
 class SearchTicket : public handlingFiles
@@ -306,22 +324,24 @@ public:
         while (file >> T.cnic >> T.movie_name >> T.day)
         {
             cout << "CNIC: " << T.cnic
-                 << " | Movie: " << T.movie_name
-                 << " | Day: " << T.day << endl;
+            << " | Movie: " << T.movie_name
+            << " | Day: " << T.day << endl;
         }
         file.close();
     }
 };
 // ... your other classes like ShowAllTickets ...
 
-class User {
+class User
+{
 private:
     string name;
     int age;
     int cnic;
 
 public:
-    void getUserData() {
+    void getUserData()
+    {
         cout << "Enter your name: ";
         cin >> name;
         cout << "Enter your age: ";
@@ -330,23 +350,20 @@ public:
         cin >> cnic;
     }
 
-    void showUserData() {
+    void showUserData()
+    {
         cout << "Name: " << name << endl;
-        cout << "Age: " << age << endl;
         cout << "CNIC: " << cnic << endl;
+        cout << "Age: " << age << endl;
     }
 
-    int getCNIC() {
+    int getCNIC()
+    {
         return cnic;
     }
 };
 
-
-
 int main()
 {
-
-    SearchTicket st;
-    st.findTicketByCNIC();
-
+  
 }
