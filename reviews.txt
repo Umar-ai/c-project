@@ -1,3 +1,4 @@
-123	Afghani	verygood	5
-123	Afghani	good	2
-123	Afghani	good	5
+234	Afghani	bad	4
+234	Afghani	bad	4
+123	Afghani	bad	3
+234	Pathan	bad	2

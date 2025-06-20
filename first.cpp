@@ -1,20 +1,31 @@
 #include <iostream>
+#include <vector>
 #include <fstream>
 #include <string>
 using namespace std;
 struct ticket
 {
-    int cnic;
+    string cnic;
     string movie_name;
     string day;
 };
 
 struct movieReview
 {
-    int cnic;
+    string cnic;
     string movie_name;
     string Review;
     int rating;
+};
+struct SimpleMovieStats {
+    string movie_name;
+    int total_rating_sum;
+    int review_count;
+    double average_rating; // To store the calculated average
+
+    // Constructor to easily initialize when creating a new stat entry
+    SimpleMovieStats(string name = "", int rating = 0) :
+        movie_name(name), total_rating_sum(rating), review_count(1), average_rating(0.0) {}
 };
 class motiveTheater
 {
@@ -61,10 +72,15 @@ public:
         ofstream file;
         file.open("tickets.txt", ios::app);
         ticket T;
-        cout << "Enter your cnic" << endl;
-        cin >> T.cnic;
-        T.day = "Friday";
-        if (n = 1)
+       
+        
+            
+            
+            cout<<"Enter cnice"<<endl;
+            cin >> T.cnic;
+            
+            T.day = "Friday";
+            if (n = 1)
         {
             T.movie_name = "Pathan";
         }
@@ -107,8 +123,9 @@ public:
         file << T.cnic << "\t" << T.movie_name << "\t" << T.day << endl;
         file.close();
         cout << "Ticket Booked" << endl;
+   
     };
-    void reviewFilm(int CNIC)
+    void reviewFilm(string CNIC)
 
     {
 
@@ -137,19 +154,19 @@ public:
                 {
                     R.movie_name = "Pathan";
                 }
-                if (n = 2)
+                else if (n = 2)
                 {
                     R.movie_name = "Shiddat";
                 }
-                if (n = 3)
+                else if (n = 3)
                 {
                     R.movie_name = "Azadi";
                 }
-                if (n = 4)
+                else if (n = 4)
                 {
                     R.movie_name = "LifeTime";
                 }
-                if (n = 5)
+                else if (n = 5)
                 {
                     R.movie_name = "Afghani";
                 }
@@ -202,8 +219,8 @@ public:
             ifs >> r.Review;
             ifs >> r.rating;
             cout << "CNIC: " << r.cnic
-                 << " | Movie: " << r.movie_name
                  << " | Day: " << r.Review
+                 << " | Movie: " << r.movie_name
                  << " | Day: " << r.rating << endl;
         }
         ifs.close();
@@ -234,7 +251,7 @@ class FilmReviews : public handlingFiles
 public:
     void addmovieReview()
     {
-        int Cnic;
+        string Cnic;
         cout << "Enter your cnic" << endl;
         cin >> Cnic;
         reviewFilm(Cnic);
@@ -244,13 +261,78 @@ public:
         cout << "Film reviews" << endl;
         showAllmoviesReviews();
     }
-};
+    void topmovies()
+    {
+            ifstream ifs("reviews.txt");
+        if (!ifs.is_open()) {
+            cout << "No reviews available to determine top movies." << endl;
+            return;
+        }
+
+        vector<SimpleMovieStats> movieStatsList; // To store aggregated data for each unique movie
+        movieReview r;
+
+        // 1. Read all reviews and aggregate data
+        while (ifs >> r.cnic >> r.movie_name >> r.Review >> r.rating) {
+            bool foundMovie = false;
+            // Check if this movie already exists in our list
+            for (size_t i = 0; i < movieStatsList.size(); ++i) {
+                if (movieStatsList[i].movie_name == r.movie_name) {
+                    movieStatsList[i].total_rating_sum += r.rating;
+                    movieStatsList[i].review_count++;
+                    foundMovie = true;
+                    break;
+                }
+            }
+            // If movie not found, add it as a new entry
+            if (!foundMovie) {
+                SimpleMovieStats newStats(r.movie_name, r.rating); // Use constructor
+                movieStatsList.push_back(newStats);
+            }
+        }
+        ifs.close(); // Close the reviews file
+
+        if (movieStatsList.empty()) {
+            cout << "No movies found with ratings." << endl;
+            return;
+        }
+
+        // 2. Calculate average rating for each movie
+        for (size_t i = 0; i < movieStatsList.size(); ++i) {
+            if (movieStatsList[i].review_count > 0) {
+                movieStatsList[i].average_rating = static_cast<double>(movieStatsList[i].total_rating_sum) / movieStatsList[i].review_count;
+            } else {
+                movieStatsList[i].average_rating = 0.0; // Should not happen if count > 0
+            }
+        }
+
+        // 3. Manually sort the movies by average rating in descending order (using Bubble Sort)
+        for (size_t i = 0; i < movieStatsList.size() - 1; ++i) {
+            for (size_t j = 0; j < movieStatsList.size() - 1 - i; ++j) {
+                if (movieStatsList[j].average_rating < movieStatsList[j+1].average_rating) {
+                    // Swap elements if the current one is smaller than the next
+                    SimpleMovieStats temp = movieStatsList[j];
+                    movieStatsList[j] = movieStatsList[j+1];
+                    movieStatsList[j+1] = temp;
+                }
+            }
+    }
+
+        cout << "\n--- Movies by Average Rating  ---\n";
+        for (size_t i = 0; i < movieStatsList.size(); ++i) {
+            cout << i + 1 << ". " << movieStatsList[i].movie_name
+            << " (Average Rating: " << movieStatsList[i].average_rating << "/5.0)" << endl;
+        }
+    
+
+}};
+
 class SearchTicket : public handlingFiles
 {
 public:
     void findTicketByCNIC()
     {
-        int searchCnic;
+        string searchCnic;
         cout << "Enter CNIC to search ticket: ";
         cin >> searchCnic;
 
@@ -284,7 +366,7 @@ class CancelTicket : public handlingFiles
 public:
     void cancelTicketByCNIC()
     {
-        int searchCnic;
+        string searchCnic;
         cout << "Enter CNIC to cancel ticket: ";
         cin >> searchCnic;
 
@@ -429,7 +511,7 @@ public:
 };
 int main()
 {
-   
+
      motiveTheater *p;
 
     int whilE_loopp_choose_choice = 1;
@@ -486,12 +568,7 @@ int main()
         {
             system("clear");
             // Top movies of the week
-            cout << "Top movies of the week" << endl;
-            cout << "1.Pathan" << endl;
-            cout << "2.Shiddat" << endl;
-            cout << "3.Azadi" << endl;
-            cout << "4.Lifetime" << endl;
-            cout << "5.Afghani" << endl;
+            fm.topmovies();
         }
         else if (choice == 5)
         {
