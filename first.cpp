@@ -67,64 +67,40 @@ class handlingFiles : public movie
 
 {
 public:
-    void bookTicket_file(int n)
-    {
-        ofstream file;
-        file.open("tickets.txt", ios::app);
-        ticket T;
-       
-        
-            
-            
-            cout<<"Enter cnice"<<endl;
-            cin >> T.cnic;
-            
-            T.day = "Friday";
-            if (n = 1)
-        {
-            T.movie_name = "Pathan";
-        }
-        else if (n = 2)
-        {
-            T.movie_name = "Shiddatt";
-        }
-        else if (n = 3)
-        {
-            T.movie_name = "Azadi";
-        }
-        else if (n = 4)
-        {
-            T.movie_name = "LifeTime";
-        }
-        else if (n = 5)
-        {
-            T.movie_name = "Afghani";
-        }
-        else if (n = 6)
-        {
-            T.movie_name = "Sita Ramam";
-        }
-        else if (n = 7)
-        {
-            T.movie_name = "Mission Impossible 7";
-        }
-        else if (n = 8)
-        {
-            T.movie_name = "Kudo";
-        }
-        else if (n = 9)
-        {
-            T.movie_name = "Loyality matters";
-        }
-        else if (n = 10)
-        {
-            T.movie_name = "Power is power";
-        }
-        file << T.cnic << "\t" << T.movie_name << "\t" << T.day << endl;
-        file.close();
-        cout << "Ticket Booked" << endl;
    
-    };
+   void bookTicket_file(int n)
+{
+    ofstream file;
+    file.open("tickets.txt", ios::app);
+    ticket T;
+
+    cout << "Enter cnice" << endl;
+    cin >> T.cnic;
+    T.day = "Friday";
+
+    if (n == 1) T.movie_name = "Pathan";
+    else if (n == 2) T.movie_name = "Shiddatt";
+    else if (n == 3) T.movie_name = "Azadi";
+    else if (n == 4) T.movie_name = "LifeTime";
+    else if (n == 5) T.movie_name = "Afghani";
+    else if (n == 6) T.movie_name = "Sita Ramam";
+    else if (n == 7) T.movie_name = "Mission Impossible 7";
+    else if (n == 8) T.movie_name = "Kudo";
+    else if (n == 9) T.movie_name = "Loyality matters";
+    else if (n == 10) T.movie_name = "Power is power";
+
+    file << T.cnic << "\t" << T.movie_name << "\t" << T.day << endl;
+    file.close();
+
+    // 🎟 Show the ticket receipt here
+    cout << "\n============= 🎟 Ticket Receipt =============\n";
+    cout << "✔ Ticket successfully booked!\n";
+    cout << "CNIC         : " << T.cnic << endl;
+    cout << "Movie        : " << T.movie_name << endl;
+    cout << "Day          : " << T.day << endl;
+    cout << "=============================================\n";
+}
+
     void reviewFilm(string CNIC)
 
     {
@@ -150,43 +126,43 @@ public:
                 cout << "Select the movie" << endl;
                 movieList();
                 cin >> n;
-                if (n = 1)
+                if (n == 1)
                 {
                     R.movie_name = "Pathan";
                 }
-                else if (n = 2)
+                else if (n == 2)
                 {
                     R.movie_name = "Shiddat";
                 }
-                else if (n = 3)
+                else if (n == 3)
                 {
                     R.movie_name = "Azadi";
                 }
-                else if (n = 4)
+                else if (n == 4)
                 {
                     R.movie_name = "LifeTime";
                 }
-                else if (n = 5)
+                else if (n == 5)
                 {
                     R.movie_name = "Afghani";
                 }
-                else if (n = 6)
+                else if (n == 6)
                 {
                     R.movie_name = "Sita Ramam";
                 }
-                else if (n = 7)
+                else if (n == 7)
                 {
                     R.movie_name = "Mission Impossible 7";
                 }
-                else if (n = 8)
+                else if (n == 8)
                 {
                     R.movie_name = "Kudo";
                 }
-                else if (n = 9)
+                else if (n == 9)
                 {
                     R.movie_name = "Loyality matters";
                 }
-                else if (n = 10)
+                else if (n == 10)
                 {
                     R.movie_name = "Power is power";
                 }
@@ -227,22 +203,62 @@ public:
         return;
     }
 };
+class User
+{
+private:
+    string name;
+    int age;
+    int cnic;
+
+public:
+   void getUserData()
+{
+    cout << "Enter your name: ";
+    cin >> name;
+    cout << "Enter your age: ";
+    cin >> age;
+    cout << "Enter your CNIC: ";
+    cin >> cnic;
+
+    // Save to file
+    ofstream file("customers.txt", ios::app);
+    file << name << "\t" << age << "\t" << cnic << endl;
+    file.close();
+}
+
+
+    void showUserData()
+    {
+        cout << "Name: " << name << endl;
+        cout << "CNIC: " << cnic << endl;
+        cout << "Age: " << age << endl;
+    }
+
+    int getCNIC()
+    {
+        return cnic;
+    }
+};
 // This class is responsible for handling booking of tickets.
 class BookTickets : public handlingFiles
 {
 public:
     void bookTicket()
+{
+    if (returnAvailableTickets() != 0)
     {
-        if (returnAvailableTickets != 0)
-        {
-            int n;
+        int n;
+        movieList(); // from the movie class that is a parent class
+        cout << "Enter your choice" << endl;
+        cin >> n;
 
-            movieList(); // from the movie class that is a parent class
-            cout << "Enter your choice" << endl;
-            cin >> n;
-            bookTicket_file(n);
-        }
-    };
+        User u;
+        u.getUserData(); // collect user info
+
+        bookTicket_file(n); // then book ticket
+    }
+}
+
 };
 int movie::available_tickets = 100;
 // This class handles filmreviews
@@ -419,36 +435,7 @@ public:
 };
 // ... your other classes like ShowAllTickets ...
 
-class User
-{
-private:
-    string name;
-    int age;
-    int cnic;
 
-public:
-    void getUserData()
-    {
-        cout << "Enter your name: ";
-        cin >> name;
-        cout << "Enter your age: ";
-        cin >> age;
-        cout << "Enter your CNIC: ";
-        cin >> cnic;
-    }
-
-    void showUserData()
-    {
-        cout << "Name: " << name << endl;
-        cout << "CNIC: " << cnic << endl;
-        cout << "Age: " << age << endl;
-    }
-
-    int getCNIC()
-    {
-        return cnic;
-    }
-};
 class Admin : public movie, public motiveTheater
 {
 private:
@@ -467,8 +454,156 @@ private:
     }
 
 public:
+	void viewCustomerData()
+{
+    if (!authenticate()) return;
+
+    ifstream file("customers.txt");
+    if (!file.is_open())
+    {
+        cout << "No customer data available.\n";
+        return;
+    }
+
+    string name;
+    int age;
+    int cnic;
+    cout << "\n--- Registered Customers ---\n";
+    while (file >> name >> age >> cnic)
+    {
+        cout << "Name: " << name << " | Age: " << age << " | CNIC: " << cnic << endl;
+    }
+    file.close();
+}
+
     // Only this function is allowed now: Show number of tickets sold
-    void showReports()
+   void addMovie() {
+    if (!authenticate()) return;
+
+    string newMovie;
+    cout << "Enter new movie name to add: ";
+    cin.ignore();
+    getline(cin, newMovie);
+
+    ofstream out("movies.txt", ios::app);
+    if (!out) {
+        cout << "❌ Failed to open movies.txt\n";
+        return;
+    }
+
+    out << newMovie << endl;
+    out.close();
+
+    cout << "✅ Movie '" << newMovie << "' added successfully.\n";
+}
+
+void removeMovie() {
+    if (!authenticate()) return;
+
+    string movieToRemove;
+    cout << "Enter movie name to remove: ";
+    cin.ignore();
+    getline(cin, movieToRemove);
+
+    ifstream in("movies.txt");
+    ofstream temp("temp.txt");
+
+    if (!in || !temp) {
+        cout << "❌ File error.\n";
+        return;
+    }
+
+    string movie;
+    bool found = false;
+
+    while (getline(in, movie)) {
+        if (movie != movieToRemove) {
+            temp << movie << endl;
+        } else {
+            found = true;
+        }
+    }
+
+    in.close();
+    temp.close();
+
+    remove("movies.txt");
+    rename("temp.txt", "movies.txt");
+
+    if (found) {
+        cout << "✅ Movie '" << movieToRemove << "' removed.\n";
+    } else {
+        cout << "❌ Movie not found.\n";
+    }
+}
+void showDynamicMovieList() {
+    ifstream file("movies.txt");
+    string movie;
+    int index = 1;
+
+    cout << "\n📂 Admin's Movie List (from file):\n";
+    while (getline(file, movie)) {
+        cout << index++ << ". " << movie << endl;
+    }
+    file.close();
+}
+
+void manageMoviesMenu() {
+    if (!authenticate()) return;
+
+    int choice;
+    cout << "\n--- Admin Movie Management ---\n";
+    cout << "1. Add Movie\n";
+    cout << "2. Remove Movie\n";
+    cout << "3. View Movie List\n";
+    cout << "Enter choice: ";
+    cin >> choice;
+    cin.ignore();
+
+    if (choice == 1) {
+        string newMovie;
+        cout << "Enter new movie name: ";
+        getline(cin, newMovie);
+
+        ofstream out("movies.txt", ios::app);
+        out << newMovie << endl;
+        out.close();
+
+        cout << "✅ Movie added.\n";
+    } else if (choice == 2) {
+        string movieToRemove;
+        cout << "Enter movie name to remove: ";
+        getline(cin, movieToRemove);
+
+        ifstream in("movies.txt");
+        ofstream temp("temp.txt");
+        string movie;
+        bool found = false;
+
+        while (getline(in, movie)) {
+            if (movie != movieToRemove) {
+                temp << movie << endl;
+            } else {
+                found = true;
+            }
+        }
+        in.close();
+        temp.close();
+        remove("movies.txt");
+        rename("temp.txt", "movies.txt");
+
+        if (found)
+            cout << "✅ Movie removed.\n";
+        else
+            cout << "❌ Movie not found.\n";
+    } else if (choice == 3) {
+        showDynamicMovieList();
+    } else {
+        cout << "❌ Invalid choice.\n";
+    }
+}
+
+void showReports()
     {
         if (!authenticate())
             return;
@@ -509,110 +644,165 @@ public:
         cout << "  part of something special. Your community, your cinema!" << endl;
     }
 };
-int main()
-{
+void initializeMovieFileIfNeeded() {
+    ifstream check("movies.txt");
+    if (check.peek() == ifstream::traits_type::eof()) {
+        check.close();
+        ofstream out("movies.txt");
+        out << "Pathan\nShiddat\nAzadi\nLifetime\nAfghani\n";
+        out << "Sita Ramam\nMission Impossible 7\nKudo\nLoyality matters\nPower is power\n";
+        out.close();
+        cout << "✅ Initialized movie list in movies.txt\n";
+    } else {
+        check.close();
+    }
+}
 
-     motiveTheater *p;
-
-    int whilE_loopp_choose_choice = 1;
-    FilmReviews fm; // filmReviews
-    BookTickets bt; // booktickets
-    ShowAllTickets st;
+int main() {
+    motiveTheater* theater;
     Admin admin;
-    CancelTicket cct;
-    SearchTicket tt;
-    while (whilE_loopp_choose_choice == 1)
-    {
+    initializeMovieFileIfNeeded();
 
-        system("clear");
-        cout << "--MOVIE THEATER MANAGEMENT SYSTEM--" << endl;
-        cout << "Enter your choice 1-8" << endl;
-        cout << "0.Show purpose" << endl;
-        cout << "1.Admin panel" << endl;
-        cout << "2.See movie list" << endl;
-        cout << "3.All movies Reviews" << endl;
-        cout << "4.Top movies of the week" << endl;
-        cout << "5.All tickets list" << endl;
-        cout << "6.Book a ticket" << endl;
-        cout << "7.Delete Booked ticket" << endl;
-        cout << "8.Search Booked ticket" << endl;
-        cout << "9.Add a review" << endl;
+    int main_choice;
+    bool running = true;
 
-        int choice;
-        cin >> choice;
-        if (choice == 0)
-        {
-            system("clear");
-            p = &admin;
-            p->purposeofthisTheater();
-        }
-        else if (choice == 1)
-        {
-            // admin panel
-            system("clear");
-            admin.showReports();
-        }
-        else if (choice == 2)
-        {
-            // show movie list
-            system("clear");
-            fm.movieList();
-        }
-        else if (choice == 3)
-        {
-            // show all movies reviews
-            system("clear");
-            fm.ShowFilmReviws();
-        }
-        else if (choice == 4)
-        {
-            system("clear");
-            // Top movies of the week
-            fm.topmovies();
-        }
-        else if (choice == 5)
-        {
-            system("clear");
-            // all tickets list
-            st.displayAllTickets();
-        }
-        else if (choice == 6)
-        {
-            system("clear");
-            // book a ticket
-            bt.bookTicket();
-        }
-        else if (choice == 7)
-        {
-            // delte booked tickets
-            system("clear");
-            cct.cancelTicketByCNIC();
-        }
-        else if (choice == 8)
-        {
-            // search book ticket
+    while (running) {
+        system("cls");
+        cout << "=== MOVIE THEATER MANAGEMENT SYSTEM ===" << endl;
+        cout << "1. User Menu" << endl;
+        cout << "2. Admin Menu" << endl;
+        cout << "3. About Our Theater" << endl;
+        cout << "0. Exit" << endl;
+        cout << "Enter your choice: ";
+        cin >> main_choice;
 
-            system("clear");
-            tt.findTicketByCNIC();
-        }
-        else if (choice == 9)
-        {
-            // add a reveiw
-            system("clear");
-            fm.addmovieReview();
-        }
+        switch (main_choice) {
+            case 1: {  // User Menu
+                FilmReviews fm;
+                BookTickets bt;
+                ShowAllTickets st;
+                CancelTicket cct;
+                SearchTicket tt;
+                
+                int user_choice;
+                bool in_user_menu = true;
+                
+                while (in_user_menu) {
+                    system("cls");
+                    cout << "=== USER MENU ===" << endl;
+                    cout << "1. View Movie List" << endl;
+                    cout << "2. Book Ticket" << endl;
+                    cout << "3. Add Review" << endl;
+                    cout << "4. View All Reviews" << endl;
+                    cout << "5. View Top Movies" << endl;
+                    cout << "6. Search Ticket" << endl;
+                    cout << "7. Cancel Ticket" << endl;
+                    cout << "8. View All Tickets" << endl;
+                    cout << "9. About Our Theater" << endl;
+                    cout << "0. Back to Main Menu" << endl;
+                    cout << "Enter your choice: ";
+                    cin >> user_choice;
 
-        else
-        {
-            //
-            // system("cls");
-            system("clear");
+                    switch (user_choice) {
+                        case 1:
+                            admin.showDynamicMovieList();
+                            break;
+                        case 2:
+                            bt.bookTicket();
+                            break;
+                        case 3:
+                            fm.addmovieReview();
+                            break;
+                        case 4:
+                            fm.ShowFilmReviws();
+                            break;
+                        case 5:
+                            fm.topmovies();
+                            break;
+                        case 6:
+                            tt.findTicketByCNIC();
+                            break;
+                        case 7:
+                            cct.cancelTicketByCNIC();
+                            break;
+                        case 8:
+                            st.displayAllTickets();
+                            break;
+                        case 9:
+                            theater = &admin;
+                            theater->purposeofthisTheater();
+                            break;
+                        case 0:
+                            in_user_menu = false;
+                            continue;
+                        default:
+                            cout << "Invalid choice!" << endl;
+                    }
+                    cout << "\nPress Enter to continue...";
+                    cin.ignore();
+                    cin.get();
+                }
+                break;
+            }
+            case 2: {  // Admin Menu
+                int admin_choice;
+                bool in_admin_menu = true;
+                
+                while (in_admin_menu) {
+                    system("cls");
+                    cout << "=== ADMIN MENU ===" << endl;
+                    cout << "1. Show Reports" << endl;
+                    cout << "2. Manage Movies" << endl;
+                    cout << "3. View Customer Data" << endl;
+                    cout << "4. About Our Theater" << endl;
+                    cout << "0. Back to Main Menu" << endl;
+                    cout << "Enter your choice: ";
+                    cin >> admin_choice;
 
-            cout << "In-Valid" << endl;
-            cout << "Enter between 1-9" << endl;
-        };
-        cout << "Enter 0 to stop and 1 to choose again" << endl;
-        cin >> whilE_loopp_choose_choice;
+                    switch (admin_choice) {
+                        case 1:
+                            admin.showReports();
+                            break;
+                        case 2:
+                            admin.manageMoviesMenu();
+                            break;
+                        
+                        case 3:
+                            admin.viewCustomerData();
+                            break;
+                        case 4:
+                            theater = &admin;
+                            theater->purposeofthisTheater();
+                            break;
+                        case 0:
+                            in_admin_menu = false;
+                            continue;
+                        default:
+                            cout << "Invalid choice!" << endl;
+                    }
+                    cout << "\nPress Enter to continue...";
+                    cin.ignore();
+                    cin.get();
+                }
+                break;
+            }
+            case 3: {  // About Theater
+                theater = &admin;
+                theater->purposeofthisTheater();
+                cout << "\nPress Enter to continue...";
+                cin.ignore();
+                cin.get();
+                break;
+            }
+            case 0:
+                running = false;
+                break;
+            default:
+                cout << "Invalid choice!" << endl;
+                cout << "Press Enter to continue...";
+                cin.ignore();
+                cin.get();
+        }
     }
 
     return 0;
