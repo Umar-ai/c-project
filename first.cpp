@@ -430,5 +430,113 @@ public:
 int main()
 {
    
+     motiveTheater *p;
+
+    int whilE_loopp_choose_choice = 1;
+    FilmReviews fm; // filmReviews
+    BookTickets bt; // booktickets
+    ShowAllTickets st;
+    Admin admin;
+    CancelTicket cct;
+    SearchTicket tt;
+    while (whilE_loopp_choose_choice == 1)
+    {
+
+        system("clear");
+        cout << "--MOVIE THEATER MANAGEMENT SYSTEM--" << endl;
+        cout << "Enter your choice 1-8" << endl;
+        cout << "0.Show purpose" << endl;
+        cout << "1.Admin panel" << endl;
+        cout << "2.See movie list" << endl;
+        cout << "3.All movies Reviews" << endl;
+        cout << "4.Top movies of the week" << endl;
+        cout << "5.All tickets list" << endl;
+        cout << "6.Book a ticket" << endl;
+        cout << "7.Delete Booked ticket" << endl;
+        cout << "8.Search Booked ticket" << endl;
+        cout << "9.Add a review" << endl;
+
+        int choice;
+        cin >> choice;
+        if (choice == 0)
+        {
+            system("clear");
+            p = &admin;
+            p->purposeofthisTheater();
+        }
+        else if (choice == 1)
+        {
+            // admin panel
+            system("clear");
+            admin.showReports();
+        }
+        else if (choice == 2)
+        {
+            // show movie list
+            system("clear");
+            fm.movieList();
+        }
+        else if (choice == 3)
+        {
+            // show all movies reviews
+            system("clear");
+            fm.ShowFilmReviws();
+        }
+        else if (choice == 4)
+        {
+            system("clear");
+            // Top movies of the week
+            cout << "Top movies of the week" << endl;
+            cout << "1.Pathan" << endl;
+            cout << "2.Shiddat" << endl;
+            cout << "3.Azadi" << endl;
+            cout << "4.Lifetime" << endl;
+            cout << "5.Afghani" << endl;
+        }
+        else if (choice == 5)
+        {
+            system("clear");
+            // all tickets list
+            st.displayAllTickets();
+        }
+        else if (choice == 6)
+        {
+            system("clear");
+            // book a ticket
+            bt.bookTicket();
+        }
+        else if (choice == 7)
+        {
+            // delte booked tickets
+            system("clear");
+            cct.cancelTicketByCNIC();
+        }
+        else if (choice == 8)
+        {
+            // search book ticket
+
+            system("clear");
+            tt.findTicketByCNIC();
+        }
+        else if (choice == 9)
+        {
+            // add a reveiw
+            system("clear");
+            fm.addmovieReview();
+        }
+
+        else
+        {
+            //
+            // system("cls");
+            system("clear");
+
+            cout << "In-Valid" << endl;
+            cout << "Enter between 1-9" << endl;
+        };
+        cout << "Enter 0 to stop and 1 to choose again" << endl;
+        cin >> whilE_loopp_choose_choice;
+    }
+
     return 0;
 }
