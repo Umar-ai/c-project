@@ -461,7 +461,7 @@ private:
     }
         if (input == adminPassword)
             return true;
-        cout << "Wrong password. Access denied.\n";
+        cout << "\nWrong password. Access denied.\n";
         return false;
     }
 
