@@ -446,7 +446,17 @@ private:
     {
         string input;
         cout << "Enter admin password: ";
-        cin >> input;
+         while ((ch = _getch()) != 13) { 
+        if (ch == 8) { 
+            if (!input.empty()) {
+                input.erase(input.size() - 1); 
+                cout << "\b \b"; 
+            }
+        } else {
+            input += ch; 
+            cout << '*'; 
+        }
+    }
         if (input == adminPassword)
             return true;
         cout << "Wrong password. Access denied.\n";
