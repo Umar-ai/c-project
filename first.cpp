@@ -2,6 +2,7 @@
 #include <vector>
 #include <fstream>
 #include <string>
+#include <conio.h>
 using namespace std;
 struct ticket
 {
