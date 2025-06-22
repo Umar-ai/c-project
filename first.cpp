@@ -445,6 +445,7 @@ private:
     // Authenticate the admin
     bool authenticate()
     {
+	char ch;
         string input;
         cout << "Enter admin password: ";
          while ((ch = _getch()) != 13) { 
